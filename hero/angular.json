@@ -57,12 +57,16 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "hero:build:production"
             },
             "development": {
-              "buildTarget": "hero:build:development"
+              "buildTarget": "hero:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

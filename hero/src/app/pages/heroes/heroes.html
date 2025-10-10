@@ -55,7 +55,7 @@
             <!-- Imagen del héroe -->
             <div class="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
               @if (hero.image.url) {
-                <img [src]="hero.image.url"
+                <img [src]="hero.image.url | imageProxy"
                      [alt]="hero.name"
                      class="w-full h-full object-cover">
               } @else {
@@ -147,7 +147,7 @@
             <!-- Imagen -->
             <div>
               @if (selectedHero()?.image?.url) {
-                <img [src]="selectedHero()!.image.url"
+                <img [src]="selectedHero()!.image.url | imageProxy"
                      [alt]="selectedHero()!.name"
                      class="w-full rounded-lg">
               }

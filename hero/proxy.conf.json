@@ -1,11 +1,17 @@
 {
-  "/api/*": {
+  "/api": {
     "target": "https://superheroapi.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/images": {
+    "target": "https://www.superherodb.com",
     "secure": true,
     "changeOrigin": true,
     "logLevel": "debug",
     "pathRewrite": {
-      "^/api": "/api"
+      "^/images": ""
     }
   }
 }

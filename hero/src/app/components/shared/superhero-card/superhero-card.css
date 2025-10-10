@@ -1,0 +1,10 @@
+/* Estilos específicos para la tarjeta de superhéroe */
+.power-stat-bar {
+  height: 8px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.power-stat-bar:hover {
+  transform: scaleY(1.2);
+}

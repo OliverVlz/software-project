@@ -68,3 +68,8 @@ export interface SearchResponse {
   'results-for': string;
   results: SuperHero[];
 }
+
+export interface SuperHeroErrorResponse {
+  response: string;
+  error: string;
+}

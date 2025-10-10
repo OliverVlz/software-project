@@ -2,11 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MockSuperHeroService } from '../../services/mock-superhero.service';
 import { SuperHero, SuperHeroResponse } from '../../interfaces/superhero.interface';
-import { Card } from '../../components/shared/card/card';
+import { ImageProxyPipe } from '../../pipes/image-proxy.pipe';
 
 @Component({
   selector: 'app-heroes',
-  imports: [CommonModule, Card],
+  imports: [CommonModule, ImageProxyPipe],
   templateUrl: './heroes.html',
   styleUrl: './heroes.css'
 })

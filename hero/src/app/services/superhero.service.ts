@@ -1,14 +1,17 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { tap, catchError, map } from 'rxjs/operators';
 import { SuperHero, SuperHeroResponse, SearchResponse } from '../interfaces/superhero.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuperHeroService {
-  private readonly baseUrl = `/api/${environment.apiKey}`;
+  private readonly baseUrl = environment.production 
+    ? environment.urlBase + environment.apiKey
+    : `/api/${environment.apiKey}`;
 
   // Signals para manejar el estado
   public loading = signal<boolean>(false);
@@ -21,7 +24,21 @@ export class SuperHeroService {
     this.loading.set(true);
     this.error.set(null);
 
-    return this.http.get<SuperHeroResponse>(`${this.baseUrl}/${id}`);
+    return this.http.get(`${this.baseUrl}/${id}`, { responseType: 'text' }).pipe(
+      map(response => {
+        try {
+          return JSON.parse(response) as SuperHeroResponse;
+        } catch (e) {
+          console.error('Error parsing JSON from API');
+          throw new Error('Invalid JSON response from API');
+        }
+      }),
+      tap(() => this.loading.set(false)),
+      catchError((error: HttpErrorResponse) => {
+        this.handleError(error);
+        return of({} as SuperHeroResponse);
+      })
+    );
   }
 
   // Buscar héroes por nombre
@@ -29,7 +46,13 @@ export class SuperHeroService {
     this.loading.set(true);
     this.error.set(null);
 
-    return this.http.get<SearchResponse>(`${this.baseUrl}/search/${name}`);
+    return this.http.get<SearchResponse>(`${this.baseUrl}/search/${name}`).pipe(
+      tap(() => this.loading.set(false)),
+      catchError(error => {
+        this.handleError(error);
+        return of({} as SearchResponse);
+      })
+    );
   }
 
   // Obtener powerstats de un héroe
