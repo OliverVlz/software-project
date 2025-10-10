@@ -1,0 +1,24 @@
+<nav class="bg-blue-600 dark:bg-slate-800 text-white shadow-lg transition-colors duration-500">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <a
+          routerLink="/"
+          [routerLinkActive]="'font-bold'"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="text-white hover:text-gray-200 transition-colors duration-200">
+          <h1 class="text-xl font-bold">Hero App</h1>
+        </a>
+      </div>
+
+      <button
+        (click)="toggleTheme()"
+        class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
+        [attr.aria-label]="isDarkMode() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+        <i [class]="isDarkMode() ? 'fa-solid fa-sun text-yellow-400 text-xl' : 'fa-solid fa-moon text-gray-800 text-xl'"></i>
+      </button>
+
+    </div>
+  </div>
+</nav>
