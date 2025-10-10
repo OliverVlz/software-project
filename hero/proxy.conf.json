@@ -1,9 +1,12 @@
 {
   "/api": {
-    "target": "https://superheroapi.com",
+    "target": "https://www.superheroapi.com/api.php",
     "secure": true,
     "changeOrigin": true,
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    }
   },
   "/images": {
     "target": "https://www.superherodb.com",

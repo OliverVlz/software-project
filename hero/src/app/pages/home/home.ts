@@ -45,7 +45,9 @@ export class Home implements OnInit {
           appearance: successResponse.appearance,
           work: successResponse.work,
           connections: successResponse.connections,
-          image: successResponse.image
+          image: {
+            url: successResponse.image.url
+          }
         });
       } else if (response && response.response === 'error') {
         const errorResponse = response as unknown as SuperHeroErrorResponse;

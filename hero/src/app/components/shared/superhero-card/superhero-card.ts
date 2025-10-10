@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuperHero } from '../../../interfaces/superhero.interface';
+import { ImageProxyPipe } from '../../../pipes/image-proxy.pipe';
 
 @Component({
   selector: 'app-superhero-card',
-  imports: [CommonModule],
+  imports: [CommonModule, ImageProxyPipe],
   templateUrl: './superhero-card.html',
   styleUrl: './superhero-card.css'
 })

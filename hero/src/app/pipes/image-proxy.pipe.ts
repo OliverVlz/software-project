@@ -10,9 +10,8 @@ export class ImageProxyPipe implements PipeTransform {
       return '';
     }
     
-    // Usar images.weserv.nl como proxy de imágenes para evitar CORS
-    // Este servicio es confiable y gratuito
-    const cleanUrl = imageUrl.replace('https://', '').replace('http://', '');
-    return `https://images.weserv.nl/?url=${cleanUrl}`;
+    // Usar corsproxy.io para evitar problemas de CORS con imágenes externas
+    // Este servicio actúa como proxy y permite cargar imágenes de dominios externos
+    return `https://corsproxy.io/?${encodeURIComponent(imageUrl)}`;
   }
 }
