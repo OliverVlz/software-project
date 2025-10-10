@@ -1,0 +1,30 @@
+/* Animaciones personalizadas para el componente Card */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.group:hover .w-20 {
+  animation: float 2s ease-in-out infinite;
+}
+
+/* Efecto de brillo en hover */
+.group::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+  z-index: 1;
+}
+
+.group:hover::before {
+  left: 100%;
+}
