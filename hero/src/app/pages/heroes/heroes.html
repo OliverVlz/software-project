@@ -39,91 +39,57 @@
     </div>
   }
 
-  <!-- Loading -->
-  @if (superHeroService.loading()) {
-    <div class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-    </div>
-  } @else {
-    <!-- Grid de héroes -->
-    @if (heroes().length > 0) {
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        @for (hero of heroes(); track hero.id) {
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transform hover:-translate-y-1 cursor-pointer"
-               (click)="selectHero(hero)">
+  <!-- Componente de lista de héroes (modular) -->
+  <app-hero-list 
+    [heroes]="heroes()"
+    [loading]="superHeroService.loading()"
+    (heroSelected)="selectHero($event)">
+  </app-hero-list>
 
-            <!-- Imagen del héroe -->
-            <div class="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
-              @if (hero.image.url) {
-                <img [src]="hero.image.url | imageProxy"
-                     [alt]="hero.name"
-                     class="w-full h-full object-cover">
-              } @else {
-                <div class="w-full h-full flex items-center justify-center">
-                  <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                  </svg>
-                </div>
-              }
+    <!-- Paginación (solo mostrar si no estamos en modo búsqueda) -->
+    @if (currentPage() > 0) {
+      <div class="flex items-center justify-center gap-2 mt-8">
+        <!-- Botón Anterior -->
+        <button 
+          (click)="onPageChange(currentPage() - 1)"
+          [disabled]="!hasPreviousPage()"
+          class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Anterior
+        </button>
 
-              <!-- Overlay con información -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <div class="absolute bottom-4 left-4 right-4">
-                  <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full"
-                          [ngClass]="getAlignmentColor(hero.biography.alignment)">
-                      {{ hero.biography.alignment }}
-                    </span>
-                    <span class="text-white text-sm">
-                      Poder: {{ getPowerLevel(hero) }}/100
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <!-- Indicador de página -->
+        <div class="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium shadow-lg">
+          @if (currentPage() === 1) {
+            <span>Populares</span>
+          } @else {
+            <span>Página {{ currentPage() }}</span>
+          }
+        </div>
 
-            <!-- Información del héroe -->
-            <div class="p-4">
-              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                {{ hero.name }}
-              </h3>
-              <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                {{ hero.biography['full-name'] || 'Nombre completo no disponible' }}
-              </p>
+        <!-- Botón Siguiente -->
+        <button 
+          (click)="onPageChange(currentPage() + 1)"
+          [disabled]="!hasNextPage()"
+          class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2">
+          Siguiente
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
 
-              <!-- Powerstats -->
-              <div class="grid grid-cols-2 gap-2 text-xs">
-                <div class="flex justify-between">
-                  <span class="text-gray-500 dark:text-gray-400">Int:</span>
-                  <span class="text-gray-900 dark:text-white font-medium">{{ hero.powerstats.intelligence }}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-gray-500 dark:text-gray-400">Str:</span>
-                  <span class="text-gray-900 dark:text-white font-medium">{{ hero.powerstats.strength }}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-gray-500 dark:text-gray-400">Spd:</span>
-                  <span class="text-gray-900 dark:text-white font-medium">{{ hero.powerstats.speed }}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-gray-500 dark:text-gray-400">Dur:</span>
-                  <span class="text-gray-900 dark:text-white font-medium">{{ hero.powerstats.durability }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+      <!-- Información de paginación -->
+      <div class="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+        @if (currentPage() === 1) {
+          <span>Mostrando superhéroes más populares</span>
+        } @else {
+          <span>Página {{ currentPage() }} de {{ getTotalPages() }}</span>
         }
       </div>
-    } @else {
-      <div class="text-center py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0118 12c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6 6 2.686 6 6z"></path>
-        </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No se encontraron héroes</h3>
-        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Intenta con otro término de búsqueda.</p>
-      </div>
     }
-  }
 
   <!-- Modal de detalles del héroe -->
   @if (selectedHero()) {
