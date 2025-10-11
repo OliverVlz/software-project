@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, of, throwError, concat, timer } from 'rxjs';
+import { Observable, of, throwError, concat, timer, forkJoin } from 'rxjs';
 import { tap, catchError, map, switchMap, filter, toArray } from 'rxjs/operators';
 import { SuperHero, SuperHeroResponse, SearchResponse } from '../interfaces/superhero.interface';
 
@@ -21,7 +21,6 @@ export class SuperHeroService {
 
   // Obtener héroe por ID
   getHeroById(id: string): Observable<SuperHeroResponse> {
-    this.loading.set(true);
     this.error.set(null);
 
     return this.http.get(`${this.baseUrl}/${id}`, { responseType: 'text' }).pipe(
@@ -33,7 +32,6 @@ export class SuperHeroService {
           throw new Error('Invalid JSON response from API');
         }
       }),
-      tap(() => this.loading.set(false)),
       catchError((error: HttpErrorResponse) => {
         this.handleError(error);
         return of({} as SuperHeroResponse);
@@ -126,14 +124,12 @@ export class SuperHeroService {
       )
     );
 
-    return concat(...heroRequests.map((req, index) =>
-      timer(index * 100).pipe(
-        switchMap(() => req)
-      )
-    )).pipe(
-      filter(response => response.response === 'success'),
-      map(response => response as SuperHero),
-      toArray(),
+    return forkJoin(heroRequests).pipe(
+      map(responses =>
+        responses
+          .filter(response => response.response === 'success')
+          .map(response => response as SuperHero)
+      ),
       tap(() => this.loading.set(false)),
       catchError(error => {
         this.handleError(error);
