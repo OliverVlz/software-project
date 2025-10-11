@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { environment } from '../../environments/environment';
 
 @Pipe({
@@ -6,12 +7,9 @@ import { environment } from '../../environments/environment';
   standalone: true
 })
 export class ImageProxyPipe implements PipeTransform {
-
-  private readonly PLACEHOLDER = '/placeholder.png';
-  
   transform(imageUrl: string): string {
     if (!imageUrl || imageUrl.trim() === '') {
-      return this.PLACEHOLDER;
+      return imageUrl;
     }
     
     return `https://corsproxy.io/?${encodeURIComponent(imageUrl)}`;

@@ -149,7 +149,7 @@
                        [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.intelligence))">
                     <div class="flex items-center justify-between mb-1">
                       <span class="text-xs font-medium opacity-80">Inteligencia</span>
-                      <span class="text-lg font-bold">{{ superhero()!.powerstats.intelligence }}</span>
+                      <span class="text-lg font-bold">{{ getPowerStatValue(superhero()!.powerstats.intelligence) }}</span>
                     </div>
                     <div class="w-full bg-white/30 rounded-full h-1.5">
                       <div class="h-1.5 rounded-full bg-current transition-all duration-500" 
@@ -160,7 +160,7 @@
                        [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.strength))">
                     <div class="flex items-center justify-between mb-1">
                       <span class="text-xs font-medium opacity-80">Fuerza</span>
-                      <span class="text-lg font-bold">{{ superhero()!.powerstats.strength }}</span>
+                      <span class="text-lg font-bold">{{ getPowerStatValue(superhero()!.powerstats.strength) }}</span>
                     </div>
                     <div class="w-full bg-white/30 rounded-full h-1.5">
                       <div class="h-1.5 rounded-full bg-current transition-all duration-500" 
@@ -171,7 +171,7 @@
                        [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.speed))">
                     <div class="flex items-center justify-between mb-1">
                       <span class="text-xs font-medium opacity-80">Velocidad</span>
-                      <span class="text-lg font-bold">{{ superhero()!.powerstats.speed }}</span>
+                      <span class="text-lg font-bold">{{ getPowerStatValue(superhero()!.powerstats.speed) }}</span>
                     </div>
                     <div class="w-full bg-white/30 rounded-full h-1.5">
                       <div class="h-1.5 rounded-full bg-current transition-all duration-500" 
@@ -182,7 +182,7 @@
                        [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.combat))">
                     <div class="flex items-center justify-between mb-1">
                       <span class="text-xs font-medium opacity-80">Combate</span>
-                      <span class="text-lg font-bold">{{ superhero()!.powerstats.combat }}</span>
+                      <span class="text-lg font-bold">{{ getPowerStatValue(superhero()!.powerstats.combat) }}</span>
                     </div>
                     <div class="w-full bg-white/30 rounded-full h-1.5">
                       <div class="h-1.5 rounded-full bg-current transition-all duration-500" 

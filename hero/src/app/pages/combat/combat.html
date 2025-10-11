@@ -124,15 +124,15 @@
               <!-- Powerstats Mini -->
               <div class="grid grid-cols-3 gap-2 text-xs">
                 <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero1()!.powerstats.strength))">
-                  <div class="font-bold">{{ hero1()!.powerstats.strength }}</div>
+                  <div class="font-bold">{{ getPowerStatValue(hero1()!.powerstats.strength) }}</div>
                   <div class="opacity-80">Fuerza</div>
                 </div>
                 <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero1()!.powerstats.speed))">
-                  <div class="font-bold">{{ hero1()!.powerstats.speed }}</div>
+                  <div class="font-bold">{{ getPowerStatValue(hero1()!.powerstats.speed) }}</div>
                   <div class="opacity-80">Velocidad</div>
                 </div>
                 <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero1()!.powerstats.combat))">
-                  <div class="font-bold">{{ hero1()!.powerstats.combat }}</div>
+                  <div class="font-bold">{{ getPowerStatValue(hero1()!.powerstats.combat) }}</div>
                   <div class="opacity-80">Combate</div>
                 </div>
               </div>
@@ -225,15 +225,15 @@
               <!-- Powerstats Mini -->
               <div class="grid grid-cols-3 gap-2 text-xs">
                 <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero2()!.powerstats.strength))">
-                  <div class="font-bold">{{ hero2()!.powerstats.strength }}</div>
+                  <div class="font-bold">{{ getPowerStatValue(hero2()!.powerstats.strength) }}</div>
                   <div class="opacity-80">Fuerza</div>
                 </div>
                 <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero2()!.powerstats.speed))">
-                  <div class="font-bold">{{ hero2()!.powerstats.speed }}</div>
+                  <div class="font-bold">{{ getPowerStatValue(hero2()!.powerstats.speed) }}</div>
                   <div class="opacity-80">Velocidad</div>
                 </div>
                 <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero2()!.powerstats.combat))">
-                  <div class="font-bold">{{ hero2()!.powerstats.combat }}</div>
+                  <div class="font-bold">{{ getPowerStatValue(hero2()!.powerstats.combat) }}</div>
                   <div class="opacity-80">Combate</div>
                 </div>
               </div>

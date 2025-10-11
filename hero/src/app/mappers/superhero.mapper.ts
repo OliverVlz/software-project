@@ -58,7 +58,7 @@ export class SuperheroMapper {
         relatives: 'Ninguno',
       },
       image: {
-        url: response.image?.url || '/placeholder.png',
+        url: response.image?.url || '',
       },
     };
   }
