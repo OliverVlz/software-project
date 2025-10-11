@@ -28,12 +28,16 @@ export class SuperHeroService {
   getHeroById(id: string): Observable<SuperHeroResponse> {
     this.error.set(null);
 
-    return this.http.get(`${this.baseUrl}/${id}`, { responseType: 'text' }).pipe(
+    return this.http.get(`${this.baseUrl}/${id}`).pipe(
       map(response => {
         try {
-          return JSON.parse(response) as SuperHeroResponse;
+          // Si es producción, allorigins devuelve { contents: "response" }
+          const responseData = environment.production && (response as any).contents
+            ? JSON.parse((response as any).contents)
+            : response;
+          return responseData as SuperHeroResponse;
         } catch (e) {
-          console.error('Error parsing JSON from API');
+          console.error('Error parsing JSON from API:', e);
           throw new Error('Invalid JSON response from API');
         }
       }),
@@ -50,6 +54,18 @@ export class SuperHeroService {
     this.error.set(null);
 
     return this.http.get<SearchResponse>(`${this.baseUrl}/search/${name}`).pipe(
+      map(response => {
+        try {
+          // Si es producción, allorigins devuelve { contents: "response" }
+          const responseData = environment.production && (response as any).contents
+            ? JSON.parse((response as any).contents)
+            : response;
+          return responseData as SearchResponse;
+        } catch (e) {
+          console.error('Error parsing JSON from API:', e);
+          throw new Error('Invalid JSON response from API');
+        }
+      }),
       tap(() => this.loading.set(false)),
       catchError(error => {
         this.handleError(error);
@@ -57,7 +73,6 @@ export class SuperHeroService {
       })
     );
   }
-
 
   private readonly allHeroIds: string[] = Array.from({ length: 731 }, (_, i) => (i + 1).toString());
   private readonly famousHeroIds = [
