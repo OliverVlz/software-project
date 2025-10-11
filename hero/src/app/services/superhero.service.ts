@@ -1,9 +1,20 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, of, throwError, concat, timer, forkJoin } from 'rxjs';
-import { tap, catchError, map, switchMap, filter, toArray } from 'rxjs/operators';
-import { SuperHero, SuperHeroResponse, SearchResponse } from '../interfaces/superhero.interface';
+import { Observable, of, forkJoin } from 'rxjs';
+import { tap, catchError, map } from 'rxjs/operators';
+import { 
+  SuperHero, 
+  SuperHeroResponse, 
+  SearchResponse,
+  PowerstatsResponse,
+  BiographyResponse,
+  AppearanceResponse,
+  WorkResponse,
+  ConnectionsResponse,
+  ImageResponse
+} from '../interfaces/superhero.interface';
+import { SuperheroMapper } from '../mappers/superhero.mapper';
 
 @Injectable({
   providedIn: 'root'
@@ -54,33 +65,33 @@ export class SuperHeroService {
   }
 
   // Obtener powerstats de un héroe
-  getHeroPowerstats(id: string): Observable<{ response: string; id: string; name: string; powerstats: any }> {
-    return this.http.get<{ response: string; id: string; name: string; powerstats: any }>(`${this.baseUrl}/${id}/powerstats`);
+  getHeroPowerstats(id: string): Observable<PowerstatsResponse> {
+    return this.http.get<PowerstatsResponse>(`${this.baseUrl}/${id}/powerstats`);
   }
 
   // Obtener biografía de un héroe
-  getHeroBiography(id: string): Observable<{ response: string; id: string; name: string; biography: any }> {
-    return this.http.get<{ response: string; id: string; name: string; biography: any }>(`${this.baseUrl}/${id}/biography`);
+  getHeroBiography(id: string): Observable<BiographyResponse> {
+    return this.http.get<BiographyResponse>(`${this.baseUrl}/${id}/biography`);
   }
 
   // Obtener apariencia de un héroe
-  getHeroAppearance(id: string): Observable<{ response: string; id: string; name: string; appearance: any }> {
-    return this.http.get<{ response: string; id: string; name: string; appearance: any }>(`${this.baseUrl}/${id}/appearance`);
+  getHeroAppearance(id: string): Observable<AppearanceResponse> {
+    return this.http.get<AppearanceResponse>(`${this.baseUrl}/${id}/appearance`);
   }
 
   // Obtener trabajo de un héroe
-  getHeroWork(id: string): Observable<{ response: string; id: string; name: string; work: any }> {
-    return this.http.get<{ response: string; id: string; name: string; work: any }>(`${this.baseUrl}/${id}/work`);
+  getHeroWork(id: string): Observable<WorkResponse> {
+    return this.http.get<WorkResponse>(`${this.baseUrl}/${id}/work`);
   }
 
   // Obtener conexiones de un héroe
-  getHeroConnections(id: string): Observable<{ response: string; id: string; name: string; connections: any }> {
-    return this.http.get<{ response: string; id: string; name: string; connections: any }>(`${this.baseUrl}/${id}/connections`);
+  getHeroConnections(id: string): Observable<ConnectionsResponse> {
+    return this.http.get<ConnectionsResponse>(`${this.baseUrl}/${id}/connections`);
   }
 
   // Obtener imagen de un héroe
-  getHeroImage(id: string): Observable<{ response: string; id: string; name: string; image: { url: string } }> {
-    return this.http.get<{ response: string; id: string; name: string; image: { url: string } }>(`${this.baseUrl}/${id}/image`);
+  getHeroImage(id: string): Observable<ImageResponse> {
+    return this.http.get<ImageResponse>(`${this.baseUrl}/${id}/image`);
   }
 
   // Método para obtener héroes populares (IDs conocidos)
@@ -125,11 +136,7 @@ export class SuperHeroService {
     );
 
     return forkJoin(heroRequests).pipe(
-      map(responses =>
-        responses
-          .filter(response => response.response === 'success')
-          .map(response => response as SuperHero)
-      ),
+      map(responses => SuperheroMapper.mapResponseArrayToSuperheroes(responses)),
       tap(() => this.loading.set(false)),
       catchError(error => {
         this.handleError(error);
@@ -139,9 +146,13 @@ export class SuperHeroService {
   }
 
   // Método para manejar errores
-  handleError(error: any): void {
+  handleError(error: HttpErrorResponse | Error): void {
     this.loading.set(false);
-    this.error.set(error.message || 'Error al cargar los datos');
+    const errorMessage = error instanceof HttpErrorResponse 
+      ? `Error ${error.status}: ${error.message}`
+      : error.message || 'Error al cargar los datos';
+    
+    this.error.set(errorMessage);
     console.error('Error en SuperHero Service:', error);
   }
 

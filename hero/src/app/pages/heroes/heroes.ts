@@ -1,9 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuperHeroService } from '../../services/superhero.service';
-import { SuperHero, SuperHeroResponse } from '../../interfaces/superhero.interface';
+import { SuperHero } from '../../interfaces/superhero.interface';
 import { ImageProxyPipe } from '../../pipes/image-proxy.pipe';
 import { HeroList } from '../../components/shared/hero-list/hero-list';
+import { getAlignmentColor } from '../../utils/superhero.utils';
 
 @Component({
   selector: 'app-heroes',
@@ -17,22 +18,12 @@ export class Heroes implements OnInit {
   public selectedHero = signal<SuperHero | null>(null);
   public currentPage = signal<number>(1);
 
-  // IDs de superhéroes famosos para la primera página
-  private readonly famousHeroIds = [
-    '70',   // Batman
-    '644',  // Superman
-    '149',  // Iron Man
-    '346',  // Wonder Woman
-    '659',  // Spider-Man
-    '213',  // Captain America
-    '620',  // Deadpool
-    '332',  // Hulk
-  ];
+  // Constantes de paginación
+  private readonly TOTAL_HEROES = 731;
+  private readonly ITEMS_PER_PAGE = 8;
 
-  // Rango total de IDs en la API (1-731)
-  private readonly minId = 1;
-  private readonly maxId = 731;
-  private readonly itemsPerPage = 8;
+  // Utilidades compartidas expuestas al template
+  protected readonly getAlignmentColor = getAlignmentColor;
 
   constructor(public superHeroService: SuperHeroService) {}
 
@@ -64,8 +55,8 @@ export class Heroes implements OnInit {
 
   getTotalPages(): number {
     // Página 1: héroes famosos (no basada en IDs secuenciales)
-    // Páginas 2 en adelante: basadas en el rango total de IDs (731)
-    const totalRegularPages = Math.ceil(731 / this.itemsPerPage);
+    // Páginas 2 en adelante: basadas en el rango total de IDs
+    const totalRegularPages = Math.ceil(this.TOTAL_HEROES / this.ITEMS_PER_PAGE);
     return totalRegularPages + 1; // +1 por la primera página de héroes famosos
   }
 
@@ -104,14 +95,5 @@ export class Heroes implements OnInit {
 
   selectHero(hero: SuperHero) {
     this.selectedHero.set(hero);
-  }
-
-  getAlignmentColor(alignment: string): string {
-    switch (alignment?.toLowerCase()) {
-      case 'good': return 'bg-green-500/90 text-white';
-      case 'bad': return 'bg-red-500/90 text-white';
-      case 'neutral': return 'bg-yellow-500/90 text-white';
-      default: return 'bg-gray-500/90 text-white';
-    }
   }
 }

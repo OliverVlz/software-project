@@ -73,3 +73,48 @@ export interface SuperHeroErrorResponse {
   response: string;
   error: string;
 }
+
+// Respuestas específicas de la API
+export interface PowerstatsResponse {
+  response: string;
+  id: string;
+  name: string;
+  powerstats: Powerstats;
+}
+
+export interface BiographyResponse {
+  response: string;
+  id: string;
+  name: string;
+  biography: Biography;
+}
+
+export interface AppearanceResponse {
+  response: string;
+  id: string;
+  name: string;
+  appearance: Appearance;
+}
+
+export interface WorkResponse {
+  response: string;
+  id: string;
+  name: string;
+  work: Work;
+}
+
+export interface ConnectionsResponse {
+  response: string;
+  id: string;
+  name: string;
+  connections: Connections;
+}
+
+export interface ImageResponse {
+  response: string;
+  id: string;
+  name: string;
+  image: {
+    url: string;
+  };
+}

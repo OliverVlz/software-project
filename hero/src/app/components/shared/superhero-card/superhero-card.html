@@ -1,5 +1,5 @@
 <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transform hover:-translate-y-1">
-  @if (loading) {
+  @if (loading()) {
     <div class="animate-pulse">
       <div class="h-64 bg-gray-300 dark:bg-gray-600"></div>
       <div class="p-6">
@@ -8,18 +8,18 @@
         <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
       </div>
     </div>
-  } @else if (superhero) {
+  } @else if (superhero()) {
     <!-- Imagen del Superhéroe -->
     <div class="relative h-64 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 overflow-hidden">
-      <img [src]="superhero.image.url | imageProxy" 
-           [alt]="superhero.name"
+      <img [src]="superhero()!.image.url | imageProxy" 
+           [alt]="superhero()!.name"
            class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300">
       
       <!-- Overlay con nombre -->
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
       <div class="absolute bottom-4 left-4 right-4">
-        <h2 class="text-2xl font-bold text-white mb-1">{{ superhero.name }}</h2>
-        <p class="text-sm text-gray-200">{{ superhero.biography['full-name'] }}</p>
+        <h2 class="text-2xl font-bold text-white mb-1">{{ superhero()!.name }}</h2>
+        <p class="text-sm text-gray-200">{{ superhero()!.biography['full-name'] }}</p>
       </div>
     </div>
 
@@ -29,18 +29,18 @@
       <div class="mb-4">
         <div class="flex items-center justify-between mb-2">
           <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Publicado por:</span>
-          <span class="text-sm text-gray-900 dark:text-white">{{ superhero.biography.publisher }}</span>
+          <span class="text-sm text-gray-900 dark:text-white">{{ superhero()!.biography.publisher }}</span>
         </div>
         <div class="flex items-center justify-between mb-2">
           <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Alineación:</span>
           <span class="text-sm px-2 py-1 rounded-full"
-                [ngClass]="superhero.biography.alignment === 'good' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'">
-            {{ superhero.biography.alignment === 'good' ? 'Héroe' : 'Villano' }}
+                [ngClass]="superhero()!.biography.alignment === 'good' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'">
+            {{ superhero()!.biography.alignment === 'good' ? 'Héroe' : 'Villano' }}
           </span>
         </div>
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Ocupación:</span>
-          <span class="text-sm text-gray-900 dark:text-white">{{ superhero.work.occupation }}</span>
+          <span class="text-sm text-gray-900 dark:text-white">{{ superhero()!.work.occupation }}</span>
         </div>
       </div>
 
@@ -49,24 +49,24 @@
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Estadísticas de Poder</h3>
         <div class="grid grid-cols-2 gap-3">
           <div class="flex items-center justify-between p-2 rounded-lg"
-               [ngClass]="getPowerStatColor(getPowerStatValue(superhero.powerstats.intelligence))">
+               [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.intelligence))">
             <span class="text-sm font-medium">Inteligencia</span>
-            <span class="text-sm font-bold">{{ superhero.powerstats.intelligence }}</span>
+            <span class="text-sm font-bold">{{ superhero()!.powerstats.intelligence }}</span>
           </div>
           <div class="flex items-center justify-between p-2 rounded-lg"
-               [ngClass]="getPowerStatColor(getPowerStatValue(superhero.powerstats.strength))">
+               [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.strength))">
             <span class="text-sm font-medium">Fuerza</span>
-            <span class="text-sm font-bold">{{ superhero.powerstats.strength }}</span>
+            <span class="text-sm font-bold">{{ superhero()!.powerstats.strength }}</span>
           </div>
           <div class="flex items-center justify-between p-2 rounded-lg"
-               [ngClass]="getPowerStatColor(getPowerStatValue(superhero.powerstats.speed))">
+               [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.speed))">
             <span class="text-sm font-medium">Velocidad</span>
-            <span class="text-sm font-bold">{{ superhero.powerstats.speed }}</span>
+            <span class="text-sm font-bold">{{ superhero()!.powerstats.speed }}</span>
           </div>
           <div class="flex items-center justify-between p-2 rounded-lg"
-               [ngClass]="getPowerStatColor(getPowerStatValue(superhero.powerstats.combat))">
+               [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.combat))">
             <span class="text-sm font-medium">Combate</span>
-            <span class="text-sm font-bold">{{ superhero.powerstats.combat }}</span>
+            <span class="text-sm font-bold">{{ superhero()!.powerstats.combat }}</span>
           </div>
         </div>
       </div>
