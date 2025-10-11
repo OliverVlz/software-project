@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SuperHeroService } from '../../services/superhero.service';
 import { SuperHero, SuperHeroResponse, SuperHeroErrorResponse } from '../../interfaces/superhero.interface';
 import { ImageProxyPipe } from '../../pipes/image-proxy.pipe';
+import { SuperheroMapper } from '../../mappers/superhero.mapper';
+import { parsePowerstat, getPowerstatColor } from '../../utils/superhero.utils';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -37,18 +39,9 @@ export class Home implements OnInit {
       if (response && response.response === 'success') {
         const successResponse = response as SuperHeroResponse;
         
-        this.superhero.set({
-          id: successResponse.id,
-          name: successResponse.name,
-          powerstats: successResponse.powerstats,
-          biography: successResponse.biography,
-          appearance: successResponse.appearance,
-          work: successResponse.work,
-          connections: successResponse.connections,
-          image: {
-            url: successResponse.image.url
-          }
-        });
+        // ✅ Usar el mapper para transformar y normalizar los datos
+        const hero = SuperheroMapper.mapResponseToSuperhero(successResponse);
+        this.superhero.set(hero);
       } else if (response && response.response === 'error') {
         const errorResponse = response as unknown as SuperHeroErrorResponse;
         this.error.set(errorResponse.error || 'El superhéroe no existe');
@@ -78,14 +71,7 @@ export class Home implements OnInit {
     this.loadRandomSuperhero();
   }
 
-  getPowerStatValue(stat: string): number {
-    return parseInt(stat) || 0;
-  }
-
-  getPowerStatColor(value: number): string {
-    if (value >= 80) return 'bg-gradient-to-br from-green-400 to-green-600 text-white';
-    if (value >= 60) return 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-white';
-    if (value >= 40) return 'bg-gradient-to-br from-orange-400 to-orange-600 text-white';
-    return 'bg-gradient-to-br from-red-400 to-red-600 text-white';
-  }
+  // Utilidades compartidas
+  protected readonly getPowerStatValue = parsePowerstat;
+  protected readonly getPowerStatColor = (value: number) => getPowerstatColor(value);
 }

@@ -1,3 +1,22 @@
+// ============================================
+// INTERFACES DE RESPUESTA API (con nullables)
+// ============================================
+
+/**
+ * Powerstats desde la API - pueden ser null o "null" (string)
+ */
+export interface ApiPowerstats {
+  intelligence: string | null;
+  strength: string | null;
+  speed: string | null;
+  durability: string | null;
+  power: string | null;
+  combat: string | null;
+}
+
+/**
+ * Powerstats normalizadas - siempre string (después del mapper)
+ */
 export interface Powerstats {
   intelligence: string;
   strength: string;
@@ -49,18 +68,21 @@ export interface SuperHero {
   };
 }
 
+/**
+ * Respuesta de la API - campos pueden ser null
+ */
 export interface SuperHeroResponse {
   response: string;
   id: string;
   name: string;
-  powerstats: Powerstats;
-  biography: Biography;
-  appearance: Appearance;
-  work: Work;
-  connections: Connections;
+  powerstats: ApiPowerstats | null;  // ✅ Puede ser null
+  biography: Biography | null;        // ✅ Puede ser null
+  appearance: Appearance | null;      // ✅ Puede ser null
+  work: Work | null;                  // ✅ Puede ser null
+  connections: Connections | null;    // ✅ Puede ser null
   image: {
-    url: string;
-  };
+    url: string | null;               // ✅ Puede ser null
+  } | null;
 }
 
 export interface SearchResponse {
@@ -72,49 +94,4 @@ export interface SearchResponse {
 export interface SuperHeroErrorResponse {
   response: string;
   error: string;
-}
-
-// Respuestas específicas de la API
-export interface PowerstatsResponse {
-  response: string;
-  id: string;
-  name: string;
-  powerstats: Powerstats;
-}
-
-export interface BiographyResponse {
-  response: string;
-  id: string;
-  name: string;
-  biography: Biography;
-}
-
-export interface AppearanceResponse {
-  response: string;
-  id: string;
-  name: string;
-  appearance: Appearance;
-}
-
-export interface WorkResponse {
-  response: string;
-  id: string;
-  name: string;
-  work: Work;
-}
-
-export interface ConnectionsResponse {
-  response: string;
-  id: string;
-  name: string;
-  connections: Connections;
-}
-
-export interface ImageResponse {
-  response: string;
-  id: string;
-  name: string;
-  image: {
-    url: string;
-  };
 }

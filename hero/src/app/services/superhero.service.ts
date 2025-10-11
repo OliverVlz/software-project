@@ -6,13 +6,7 @@ import { tap, catchError, map } from 'rxjs/operators';
 import { 
   SuperHero, 
   SuperHeroResponse, 
-  SearchResponse,
-  PowerstatsResponse,
-  BiographyResponse,
-  AppearanceResponse,
-  WorkResponse,
-  ConnectionsResponse,
-  ImageResponse
+  SearchResponse
 } from '../interfaces/superhero.interface';
 import { SuperheroMapper } from '../mappers/superhero.mapper';
 
@@ -64,41 +58,6 @@ export class SuperHeroService {
     );
   }
 
-  // Obtener powerstats de un héroe
-  getHeroPowerstats(id: string): Observable<PowerstatsResponse> {
-    return this.http.get<PowerstatsResponse>(`${this.baseUrl}/${id}/powerstats`);
-  }
-
-  // Obtener biografía de un héroe
-  getHeroBiography(id: string): Observable<BiographyResponse> {
-    return this.http.get<BiographyResponse>(`${this.baseUrl}/${id}/biography`);
-  }
-
-  // Obtener apariencia de un héroe
-  getHeroAppearance(id: string): Observable<AppearanceResponse> {
-    return this.http.get<AppearanceResponse>(`${this.baseUrl}/${id}/appearance`);
-  }
-
-  // Obtener trabajo de un héroe
-  getHeroWork(id: string): Observable<WorkResponse> {
-    return this.http.get<WorkResponse>(`${this.baseUrl}/${id}/work`);
-  }
-
-  // Obtener conexiones de un héroe
-  getHeroConnections(id: string): Observable<ConnectionsResponse> {
-    return this.http.get<ConnectionsResponse>(`${this.baseUrl}/${id}/connections`);
-  }
-
-  // Obtener imagen de un héroe
-  getHeroImage(id: string): Observable<ImageResponse> {
-    return this.http.get<ImageResponse>(`${this.baseUrl}/${id}/image`);
-  }
-
-  // Método para obtener héroes populares (IDs conocidos)
-  getPopularHeroes(): Observable<SuperHeroResponse>[] {
-    const popularIds = ['70', '644', '149', '346', '659']; // Wonder Woman, Superman, Batman, Iron Man, Spider-Man
-    return popularIds.map(id => this.getHeroById(id));
-  }
 
   private readonly allHeroIds: string[] = Array.from({ length: 731 }, (_, i) => (i + 1).toString());
   private readonly famousHeroIds = [

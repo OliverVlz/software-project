@@ -11,16 +11,19 @@ export class SuperheroMapper {
    * Maneja valores null/undefined con valores por defecto seguros
    */
   static mapResponseToSuperhero(response: SuperHeroResponse): SuperHero {
+    // Normalizar powerstats (puede venir null o con propiedades null)
+    const apiPowerstats = response.powerstats;
+    
     return {
       id: response.id || 'unknown',
       name: response.name || 'Superhero Desconocido',
       powerstats: {
-        intelligence: response.powerstats?.intelligence || '0',
-        strength: response.powerstats?.strength || '0',
-        speed: response.powerstats?.speed || '0',
-        durability: response.powerstats?.durability || '0',
-        power: response.powerstats?.power || '0',
-        combat: response.powerstats?.combat || '0',
+        intelligence: apiPowerstats?.intelligence || '0',
+        strength: apiPowerstats?.strength || '0',
+        speed: apiPowerstats?.speed || '0',
+        durability: apiPowerstats?.durability || '0',
+        power: apiPowerstats?.power || '0',
+        combat: apiPowerstats?.combat || '0',
       },
       biography: {
         'full-name': response.biography?.['full-name'] || 'Desconocido',
