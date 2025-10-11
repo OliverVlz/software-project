@@ -1,49 +1,57 @@
 <nav class="bg-blue-600 dark:bg-slate-800 text-white shadow-lg transition-colors duration-500">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
-      <!-- Logo -->
+      <!-- Logo Section -->
       <div class="flex-shrink-0">
         <a
           routerLink="/"
           [routerLinkActive]="'font-bold'"
           [routerLinkActiveOptions]="{ exact: true }"
-          class="text-white hover:text-gray-200 transition-colors duration-200">
-          <h1 class="text-xl font-bold">Hero App</h1>
+          class="text-white hover:text-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 rounded-md px-2 py-1"
+          aria-label="Ir a la página principal">
+          <h1 class="text-xl font-bold tracking-tight">Hero App</h1>
         </a>
       </div>
 
-      <!-- Navigation Links -->
-      <div class="hidden md:block">
-        <div class="ml-10 flex items-baseline space-x-4">
-          <a
-            routerLink="/"
-            routerLinkActive="font-bold"
-            [routerLinkActiveOptions]="{ exact: true }"
-            class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-            Home
-          </a>
-          <a
-            routerLink="/heroes"
-            routerLinkActive="font-bold"
-            class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-            Heroes
-          </a>
-          <a
-            routerLink="/combat"
-            routerLinkActive="font-bold"
-            class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-            Combate
-          </a>
-        </div>
+      <!-- Navigation Section -->
+      <div class="hidden md:flex md:items-center md:space-x-1">
+        <a
+          routerLink="/"
+          routerLinkActive="font-bold bg-blue-700 dark:bg-slate-700"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="text-white hover:bg-blue-700 dark:hover:bg-slate-700 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
+          aria-label="Ir a la página de inicio">
+          Inicio
+        </a>
+        <a
+          routerLink="/heroes"
+          routerLinkActive="font-bold bg-blue-700 dark:bg-slate-700"
+          class="text-white hover:bg-blue-700 dark:hover:bg-slate-700 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
+          aria-label="Ver lista de héroes">
+          Héroes
+        </a>
+        <a
+          routerLink="/combat"
+          routerLinkActive="font-bold bg-blue-700 dark:bg-slate-700"
+          class="text-white hover:bg-blue-700 dark:hover:bg-slate-700 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
+          aria-label="Ir a la sección de combates">
+          Combate
+        </a>
       </div>
 
-      <button
-        (click)="toggleTheme()"
-        class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
-        [attr.aria-label]="isDarkMode() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
-        <i [class]="isDarkMode() ? 'fa-solid fa-sun text-yellow-400 text-xl' : 'fa-solid fa-moon text-gray-800 text-xl'"></i>
-      </button>
-
+      <!-- Theme Toggle Section -->
+      <div class="flex items-center">
+        <button
+          (click)="toggleTheme()"
+          class="p-2 rounded-lg bg-white/10 hover:bg-white/20 dark:bg-slate-700 dark:hover:bg-slate-600 text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
+          [attr.aria-label]="isDarkMode() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+          type="button">
+          <i
+            [class]="isDarkMode() ? 'fa-solid fa-sun text-yellow-400' : 'fa-solid fa-moon text-white'"
+            class="text-lg transition-colors duration-200">
+          </i>
+        </button>
+      </div>
     </div>
   </div>
 </nav>

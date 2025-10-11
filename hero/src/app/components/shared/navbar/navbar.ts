@@ -6,32 +6,34 @@ import { CommonModule } from '@angular/common';
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css']
 })
 export class Navbar {
+
+  /** Estado reactivo para controlar el modo oscuro */
   isDarkMode = signal<boolean>(false);
 
   constructor() {
-    // Verificar si hay una preferencia guardada
+    // Inicializar tema desde localStorage o preferencia del sistema
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     this.isDarkMode.set(savedTheme === 'dark' || (!savedTheme && prefersDark));
-    
-    // Aplicar el tema inicial
+
     this.applyTheme();
-    
-    // Efecto para aplicar el tema cuando cambie
+
+    // Aplicar tema automáticamente cuando cambie
     effect(() => {
       this.applyTheme();
     });
   }
 
+  /** Alterna entre modo claro y oscuro */
   toggleTheme() {
     this.isDarkMode.update(value => !value);
     localStorage.setItem('theme', this.isDarkMode() ? 'dark' : 'light');
   }
 
+  /** Aplica el tema actual al documento */
   private applyTheme() {
     if (this.isDarkMode()) {
       document.documentElement.classList.add('dark');

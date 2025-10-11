@@ -8,15 +8,13 @@ import { getAlignmentColor, getAlignmentLabel, calculateAveragePowerLevel } from
   selector: 'app-hero-list',
   imports: [CommonModule, ImageProxyPipe],
   templateUrl: './hero-list.html',
-  styleUrl: './hero-list.css'
 })
 export class HeroList {
-  // Input/Output signals (nueva sintaxis)
+
   heroes = input<SuperHero[]>([]);
   loading = input<boolean>(false);
   heroSelected = output<SuperHero>();
 
-  // Utilidades compartidas
   protected readonly getAlignmentColor = getAlignmentColor;
   protected readonly getAlignmentLabel = getAlignmentLabel;
   protected readonly getPowerLevel = calculateAveragePowerLevel;

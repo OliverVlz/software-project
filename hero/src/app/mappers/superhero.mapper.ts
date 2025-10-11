@@ -51,24 +51,17 @@ export class SuperheroMapper {
         relatives: 'Ninguno',
       },
       image: {
-        // El pipe imageProxy manejará strings vacíos con placeholder
         url: response.image?.url || '',
       },
     };
   }
 
-  /**
-   * Mapea un array de respuestas a un array de SuperHero
-   */
   static mapResponseArrayToSuperheroes(responses: SuperHeroResponse[]): SuperHero[] {
     return responses
       .filter(response => response.response === 'success')
       .map(this.mapResponseToSuperhero);
   }
 
-  /**
-   * Calcula el nivel de poder promedio de un superhéroe
-   */
   static calculatePowerLevel(hero: SuperHero): number {
     const stats = hero.powerstats;
     const total = 
@@ -82,9 +75,6 @@ export class SuperheroMapper {
     return Math.round(total / 6);
   }
 
-  /**
-   * Normaliza un valor de powerstat
-   */
   static normalizePowerstat(value: string | undefined): number {
     return parseInt(value || '0') || 0;
   }

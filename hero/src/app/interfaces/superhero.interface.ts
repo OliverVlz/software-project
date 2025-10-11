@@ -1,10 +1,3 @@
-// ============================================
-// INTERFACES DE RESPUESTA API (con nullables)
-// ============================================
-
-/**
- * Powerstats desde la API - pueden ser null o "null" (string)
- */
 export interface ApiPowerstats {
   intelligence: string | null;
   strength: string | null;
@@ -75,13 +68,13 @@ export interface SuperHeroResponse {
   response: string;
   id: string;
   name: string;
-  powerstats: ApiPowerstats | null;  // ✅ Puede ser null
-  biography: Biography | null;        // ✅ Puede ser null
-  appearance: Appearance | null;      // ✅ Puede ser null
-  work: Work | null;                  // ✅ Puede ser null
-  connections: Connections | null;    // ✅ Puede ser null
+  powerstats: ApiPowerstats | null;
+  biography: Biography | null;
+  appearance: Appearance | null;
+  work: Work | null;
+  connections: Connections | null;
   image: {
-    url: string | null;               // ✅ Puede ser null
+    url: string | null;
   } | null;
 }
 
