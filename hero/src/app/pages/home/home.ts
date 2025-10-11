@@ -2,12 +2,12 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuperHeroService } from '../../services/superhero.service';
 import { SuperHero, SuperHeroResponse, SuperHeroErrorResponse } from '../../interfaces/superhero.interface';
-import { SuperHeroCard } from '../../components/shared/superhero-card/superhero-card';
+import { ImageProxyPipe } from '../../pipes/image-proxy.pipe';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, SuperHeroCard],
+  imports: [CommonModule, ImageProxyPipe],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -70,23 +70,22 @@ export class Home implements OnInit {
   }
 
   private getRandomSuperheroId(): string {
-    // IDs de superhéroes populares que sabemos que existen
-    const popularIds = [
-      '70',   // Batman
-      '644',  // Superman  
-      '149',  // Iron Man
-      '346',  // Wonder Woman
-      '659',  // Spider-Man
-      '213',  // Captain America
-      '30',   // Aquaman
-      '107',  // Black Widow
-      '135'   // Hulk
-    ];
-    const randomIndex = Math.floor(Math.random() * popularIds.length);
-    return popularIds[randomIndex];
+    const randomId = Math.floor(Math.random() * 731) + 1;
+    return randomId.toString();
   }
 
   onRetry(): void {
     this.loadRandomSuperhero();
+  }
+
+  getPowerStatValue(stat: string): number {
+    return parseInt(stat) || 0;
+  }
+
+  getPowerStatColor(value: number): string {
+    if (value >= 80) return 'bg-gradient-to-br from-green-400 to-green-600 text-white';
+    if (value >= 60) return 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-white';
+    if (value >= 40) return 'bg-gradient-to-br from-orange-400 to-orange-600 text-white';
+    return 'bg-gradient-to-br from-red-400 to-red-600 text-white';
   }
 }
