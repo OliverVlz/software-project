@@ -3,12 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, of, forkJoin } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
-import { 
-  SuperHero, 
-  SuperHeroResponse, 
+import {
+  SuperHero,
+  SuperHeroResponse,
   SearchResponse
 } from '../interfaces/superhero.interface';
 import { SuperheroMapper } from '../mappers/superhero.mapper';
+import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,24 +23,27 @@ export class SuperHeroService {
   public loading = signal<boolean>(false);
   public error = signal<string | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private cacheService: CacheService
+  ) {}
 
   // Obtener héroe por ID
   getHeroById(id: string): Observable<SuperHeroResponse> {
     this.error.set(null);
 
-    return this.http.get(`${this.baseUrl}/${id}`).pipe(
-      map(response => {
-        try {
-          // Si es producción, allorigins devuelve { contents: "response" }
-          const responseData = environment.production && (response as any).contents
-            ? JSON.parse((response as any).contents)
-            : response;
-          return responseData as SuperHeroResponse;
-        } catch (e) {
-          console.error('Error parsing JSON from API:', e);
-          throw new Error('Invalid JSON response from API');
-        }
+    const cacheKey = `hero_${id}`;
+    const cachedData = this.cacheService.get<SuperHeroResponse>(cacheKey);
+
+    if (cachedData) {
+      console.log(`Cache hit para héroe ID: ${id}`);
+      return of(cachedData);
+    }
+
+    console.log(`Cache miss para héroe ID: ${id}`);
+    return this.http.get<SuperHeroResponse>(`${this.baseUrl}/${id}`).pipe(
+      tap(response => {
+        this.cacheService.set(cacheKey, response, 10 * 60 * 1000); // 10 minutos para héroes individuales
       }),
       catchError((error: HttpErrorResponse) => {
         this.handleError(error);
@@ -53,20 +57,21 @@ export class SuperHeroService {
     this.loading.set(true);
     this.error.set(null);
 
+    const cacheKey = `search_${name.toLowerCase()}`;
+    const cachedData = this.cacheService.get<SearchResponse>(cacheKey);
+
+    if (cachedData) {
+      console.log(`Cache hit para búsqueda: ${name}`);
+      this.loading.set(false);
+      return of(cachedData);
+    }
+
+    console.log(`Cache miss para búsqueda: ${name}`);
     return this.http.get<SearchResponse>(`${this.baseUrl}/search/${name}`).pipe(
-      map(response => {
-        try {
-          // Si es producción, allorigins devuelve { contents: "response" }
-          const responseData = environment.production && (response as any).contents
-            ? JSON.parse((response as any).contents)
-            : response;
-          return responseData as SearchResponse;
-        } catch (e) {
-          console.error('Error parsing JSON from API:', e);
-          throw new Error('Invalid JSON response from API');
-        }
+      tap(response => {
+        this.cacheService.set(cacheKey, response, 5 * 60 * 1000); // 5 minutos para búsquedas
+        this.loading.set(false);
       }),
-      tap(() => this.loading.set(false)),
       catchError(error => {
         this.handleError(error);
         return of({} as SearchResponse);
@@ -122,10 +127,10 @@ export class SuperHeroService {
   // Método para manejar errores
   handleError(error: HttpErrorResponse | Error): void {
     this.loading.set(false);
-    const errorMessage = error instanceof HttpErrorResponse 
+    const errorMessage = error instanceof HttpErrorResponse
       ? `Error ${error.status}: ${error.message}`
       : error.message || 'Error al cargar los datos';
-    
+
     this.error.set(errorMessage);
     console.error('Error en SuperHero Service:', error);
   }
@@ -133,5 +138,15 @@ export class SuperHeroService {
   // Método para limpiar errores
   clearError(): void {
     this.error.set(null);
+  }
+
+  // Métodos para gestión del cache
+  clearCache(): void {
+    this.cacheService.clear();
+    console.log('Cache limpiado');
+  }
+
+  getCacheStats() {
+    return this.cacheService.getStats();
   }
 }
