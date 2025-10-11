@@ -11,7 +11,6 @@ import { parsePowerstat, getPowerstatColor } from '../../../utils/superhero.util
   styleUrl: './superhero-card.css'
 })
 export class SuperHeroCard {
-  // Input signals (nueva sintaxis Angular)
   superhero = input<SuperHero | null>(null);
   loading = input<boolean>(false);
 

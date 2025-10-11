@@ -5,7 +5,7 @@ import { SuperHero, SuperHeroResponse } from '../interfaces/superhero.interface'
  * Centraliza la lógica de transformación y normalización de datos
  */
 export class SuperheroMapper {
-  
+
   /**
    * Mapea una respuesta individual de la API a un SuperHero
    * Maneja valores null/undefined con valores por defecto seguros
@@ -14,7 +14,7 @@ export class SuperheroMapper {
     // Normalizar powerstats (puede venir null o con propiedades "null" como string)
     const apiPowerstats = response.powerstats;
 
-    // ✅ Función helper para normalizar valores de powerstats
+    // Función helper para normalizar valores de powerstats
     const normalizePowerstat = (value: string | null | undefined): string => {
       if (value === null || value === undefined) return '0';
       if (typeof value === 'string' && value.toLowerCase() === 'null') return '0';
@@ -71,14 +71,14 @@ export class SuperheroMapper {
 
   static calculatePowerLevel(hero: SuperHero): number {
     const stats = hero.powerstats;
-    const total = 
-      this.normalizePowerstat(stats.intelligence) + 
+    const total =
+      this.normalizePowerstat(stats.intelligence) +
       this.normalizePowerstat(stats.strength) +
-      this.normalizePowerstat(stats.speed) + 
+      this.normalizePowerstat(stats.speed) +
       this.normalizePowerstat(stats.durability) +
-      this.normalizePowerstat(stats.power) + 
+      this.normalizePowerstat(stats.power) +
       this.normalizePowerstat(stats.combat);
-    
+
     return Math.round(total / 6);
   }
 
