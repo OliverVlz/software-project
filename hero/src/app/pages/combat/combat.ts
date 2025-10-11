@@ -2,9 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuperHeroService } from '../../services/superhero.service';
 import { CombatService } from '../../services/combat.service';
-import { SuperHero, SuperHeroResponse, SuperHeroErrorResponse } from '../../interfaces/superhero.interface';
+import { SuperHero, SuperHeroResponse } from '../../interfaces/superhero.interface';
 import { CombatResult } from '../../interfaces/combat.interface';
 import { ImageProxyPipe } from '../../pipes/image-proxy.pipe';
+import { SuperheroMapper } from '../../mappers/superhero.mapper';
+import { parsePowerstat, getPowerstatColor } from '../../utils/superhero.utils';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -51,10 +53,13 @@ export class Combat implements OnInit {
         firstValueFrom(this.superheroService.getHeroById(id2))
       ]);
 
-      // Validar respuestas
+      // Validar respuestas y usar mapper
       if (response1.response === 'success' && response2.response === 'success') {
-        this.hero1.set(this.mapResponseToHero(response1));
-        this.hero2.set(this.mapResponseToHero(response2));
+        const hero1 = SuperheroMapper.mapResponseToSuperhero(response1);
+        const hero2 = SuperheroMapper.mapResponseToSuperhero(response2);
+        
+        this.hero1.set(hero1);
+        this.hero2.set(hero2);
       } else {
         this.error.set('Error al cargar los superhéroes para el combate');
       }
@@ -64,21 +69,6 @@ export class Combat implements OnInit {
     } finally {
       this.loading.set(false);
     }
-  }
-
-  private mapResponseToHero(response: SuperHeroResponse): SuperHero {
-    return {
-      id: response.id,
-      name: response.name,
-      powerstats: response.powerstats,
-      biography: response.biography,
-      appearance: response.appearance,
-      work: response.work,
-      connections: response.connections,
-      image: {
-        url: response.image.url
-      }
-    };
   }
 
 
@@ -99,16 +89,9 @@ export class Combat implements OnInit {
   }
 
 
-  getPowerStatValue(stat: string): number {
-    return parseInt(stat) || 0;
-  }
-
-  getPowerStatColor(value: number): string {
-    if (value >= 80) return 'bg-gradient-to-br from-green-400 to-green-600 text-white';
-    if (value >= 60) return 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-white';
-    if (value >= 40) return 'bg-gradient-to-br from-orange-400 to-orange-600 text-white';
-    return 'bg-gradient-to-br from-red-400 to-red-600 text-white';
-  }
+  // Utilidades compartidas
+  protected readonly getPowerStatValue = parsePowerstat;
+  protected readonly getPowerStatColor = (value: number) => getPowerstatColor(value);
 
   onRetry(): void {
     this.startNewCombat();

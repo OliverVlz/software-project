@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SuperHero } from '../interfaces/superhero.interface';
 import { CombatResult, CombatStats } from '../interfaces/combat.interface';
+import { parsePowerstat } from '../utils/superhero.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -24,13 +25,13 @@ export class CombatService {
   calculateHeroScore(hero: SuperHero): number {
     const stats = hero.powerstats;
     
-    // Convertir strings a números, usar 0 si no es válido
-    const intelligence = parseInt(stats.intelligence) || 0;
-    const strength = parseInt(stats.strength) || 0;
-    const speed = parseInt(stats.speed) || 0;
-    const durability = parseInt(stats.durability) || 0;
-    const power = parseInt(stats.power) || 0;
-    const combat = parseInt(stats.combat) || 0;
+    // Usar utilidad compartida para parsear stats
+    const intelligence = parsePowerstat(stats.intelligence);
+    const strength = parsePowerstat(stats.strength);
+    const speed = parsePowerstat(stats.speed);
+    const durability = parsePowerstat(stats.durability);
+    const power = parsePowerstat(stats.power);
+    const combat = parsePowerstat(stats.combat);
 
     // Aplicar pesos especiales
     // Combate tiene el mayor peso (1.5) porque representa experiencia en pelea
@@ -51,12 +52,13 @@ export class CombatService {
   getHeroStats(hero: SuperHero): CombatStats {
     const stats = hero.powerstats;
     
-    const intelligence = parseInt(stats.intelligence) || 0;
-    const strength = parseInt(stats.strength) || 0;
-    const speed = parseInt(stats.speed) || 0;
-    const durability = parseInt(stats.durability) || 0;
-    const power = parseInt(stats.power) || 0;
-    const combat = parseInt(stats.combat) || 0;
+    // Usar utilidad compartida para parsear stats
+    const intelligence = parsePowerstat(stats.intelligence);
+    const strength = parsePowerstat(stats.strength);
+    const speed = parsePowerstat(stats.speed);
+    const durability = parsePowerstat(stats.durability);
+    const power = parsePowerstat(stats.power);
+    const combat = parsePowerstat(stats.combat);
     
     const totalScore = this.calculateHeroScore(hero);
 
