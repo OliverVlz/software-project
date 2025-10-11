@@ -8,11 +8,12 @@ export class SuperheroMapper {
   
   /**
    * Mapea una respuesta individual de la API a un SuperHero
+   * Maneja valores null/undefined con valores por defecto seguros
    */
   static mapResponseToSuperhero(response: SuperHeroResponse): SuperHero {
     return {
-      id: response.id,
-      name: response.name,
+      id: response.id || 'unknown',
+      name: response.name || 'Superhero Desconocido',
       powerstats: {
         intelligence: response.powerstats?.intelligence || '0',
         strength: response.powerstats?.strength || '0',
@@ -47,6 +48,7 @@ export class SuperheroMapper {
         relatives: 'Ninguno',
       },
       image: {
+        // El pipe imageProxy manejará strings vacíos con placeholder
         url: response.image?.url || '',
       },
     };
