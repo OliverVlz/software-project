@@ -1,0 +1,290 @@
+<!-- Combat Arena -->
+<div class="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-8">
+  <div class="max-w-7xl w-full">
+    
+    @if (error()) {
+      <!-- Estado de Error -->
+      <div class="max-w-md mx-auto">
+        <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 rounded-2xl shadow-2xl p-8 text-center border-2 border-red-200 dark:border-red-800">
+          <div class="mb-6">
+            <div class="w-20 h-20 mx-auto bg-red-200 dark:bg-red-800 rounded-full flex items-center justify-center">
+              <svg class="w-10 h-10 text-red-600 dark:text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold text-red-900 dark:text-red-100 mb-3">
+            ¡Algo salió mal!
+          </h3>
+          <p class="text-red-700 dark:text-red-300 mb-6 text-lg">
+            {{ error() }}
+          </p>
+          <button (click)="onRetry()" 
+                  class="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Intentar de nuevo
+          </button>
+        </div>
+      </div>
+    } @else if (loading()) {
+      <!-- Estado de Carga -->
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8">
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            Preparando el combate...
+          </h1>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8 items-center">
+          <!-- Hero 1 Skeleton -->
+          <div class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl p-6 shadow-xl">
+            <div class="h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl animate-pulse mb-4"></div>
+            <div class="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mx-auto animate-pulse mb-2"></div>
+            <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mx-auto animate-pulse"></div>
+          </div>
+
+          <!-- VS -->
+          <div class="flex items-center justify-center">
+            <div class="text-6xl font-black text-gray-400 dark:text-gray-600 animate-pulse">VS</div>
+          </div>
+
+          <!-- Hero 2 Skeleton -->
+          <div class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl p-6 shadow-xl">
+            <div class="h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl animate-pulse mb-4"></div>
+            <div class="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mx-auto animate-pulse mb-2"></div>
+            <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mx-auto animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    } @else if (hero1() && hero2()) {
+      <!-- Arena de Combate -->
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Encabezado -->
+        <div class="text-center mb-8">
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-100 to-orange-100 dark:from-red-900 dark:to-orange-900 rounded-full mb-4">
+            <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
+            </svg>
+            <span class="text-sm font-semibold text-red-900 dark:text-red-100">Arena de Combate</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
+            ¡Batalla Épica!
+          </h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            Dos superhéroes se enfrentan. Solo uno puede ganar.
+          </p>
+        </div>
+
+        <!-- Grid de Combatientes -->
+        <div class="grid md:grid-cols-3 gap-8 items-center mb-8">
+          
+          <!-- Héroe 1 -->
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 rounded-2xl shadow-2xl overflow-hidden border-2 border-blue-200 dark:border-blue-800 transform transition-all duration-300"
+               [ngClass]="{'scale-110 ring-4 ring-yellow-400': showResult() && combatResult()!.winner.id === hero1()!.id, 'opacity-50': showResult() && combatResult()!.winner.id !== hero1()!.id, 'shake': isFighting()}">
+            
+            <!-- Imagen -->
+            <div class="relative h-64 bg-gradient-to-br from-blue-500 to-blue-600 overflow-hidden">
+              <img 
+                [src]="hero1()!.image.url | imageProxy" 
+                [alt]="hero1()!.name"
+                class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              
+              <!-- Badge -->
+              <div class="absolute top-4 right-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur-sm"
+                      [ngClass]="hero1()!.biography.alignment === 'good' 
+                        ? 'bg-green-500/90 text-white' 
+                        : 'bg-red-500/90 text-white'">
+                  {{ hero1()!.biography.alignment === 'good' ? 'Héroe' : 'Villano' }}
+                </span>
+              </div>
+
+              <!-- Winner Badge -->
+              @if (showResult() && combatResult()!.winner.id === hero1()!.id) {
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div class="winner-badge bg-yellow-400 text-yellow-900 px-6 py-3 rounded-full font-black text-xl shadow-2xl">
+                    ¡GANADOR!
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Info -->
+            <div class="p-6">
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white text-center mb-2">
+                {{ hero1()!.name }}
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
+                {{ hero1()!.biography.publisher }}
+              </p>
+
+              <!-- Powerstats Mini -->
+              <div class="grid grid-cols-3 gap-2 text-xs">
+                <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero1()!.powerstats.strength))">
+                  <div class="font-bold">{{ hero1()!.powerstats.strength }}</div>
+                  <div class="opacity-80">Fuerza</div>
+                </div>
+                <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero1()!.powerstats.speed))">
+                  <div class="font-bold">{{ hero1()!.powerstats.speed }}</div>
+                  <div class="opacity-80">Velocidad</div>
+                </div>
+                <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero1()!.powerstats.combat))">
+                  <div class="font-bold">{{ hero1()!.powerstats.combat }}</div>
+                  <div class="opacity-80">Combate</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VS Center -->
+          <div class="flex flex-col items-center justify-center gap-6">
+            <div class="vs-text text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600 drop-shadow-2xl"
+                 [ngClass]="{'pulse': isFighting()}">
+              VS
+            </div>
+
+            @if (!showResult()) {
+              <button (click)="fight()" 
+                      [disabled]="isFighting()"
+                      class="px-8 py-4 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-200 text-lg"
+                      [ngClass]="{'animate-pulse': isFighting()}">
+                @if (isFighting()) {
+                  <span class="flex items-center gap-2">
+                    <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    ¡Luchando!
+                  </span>
+                } @else {
+                  <span class="flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
+                    </svg>
+                    ¡PELEAR!
+                  </span>
+                }
+              </button>
+            } @else {
+              <button (click)="onRetry()" 
+                      class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-200 text-lg">
+                <span class="flex items-center gap-2">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                  </svg>
+                  Nuevo Combate
+                </span>
+              </button>
+            }
+          </div>
+
+          <!-- Héroe 2 -->
+          <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 rounded-2xl shadow-2xl overflow-hidden border-2 border-red-200 dark:border-red-800 transform transition-all duration-300"
+               [ngClass]="{'scale-110 ring-4 ring-yellow-400': showResult() && combatResult()!.winner.id === hero2()!.id, 'opacity-50': showResult() && combatResult()!.winner.id !== hero2()!.id, 'shake': isFighting()}">
+            
+            <!-- Imagen -->
+            <div class="relative h-64 bg-gradient-to-br from-red-500 to-red-600 overflow-hidden">
+              <img 
+                [src]="hero2()!.image.url | imageProxy" 
+                [alt]="hero2()!.name"
+                class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              
+              <!-- Badge -->
+              <div class="absolute top-4 left-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur-sm"
+                      [ngClass]="hero2()!.biography.alignment === 'good' 
+                        ? 'bg-green-500/90 text-white' 
+                        : 'bg-red-500/90 text-white'">
+                  {{ hero2()!.biography.alignment === 'good' ? 'Héroe' : 'Villano' }}
+                </span>
+              </div>
+
+              <!-- Winner Badge -->
+              @if (showResult() && combatResult()!.winner.id === hero2()!.id) {
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div class="winner-badge bg-yellow-400 text-yellow-900 px-6 py-3 rounded-full font-black text-xl shadow-2xl">
+                    ¡GANADOR!
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Info -->
+            <div class="p-6">
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white text-center mb-2">
+                {{ hero2()!.name }}
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
+                {{ hero2()!.biography.publisher }}
+              </p>
+
+              <!-- Powerstats Mini -->
+              <div class="grid grid-cols-3 gap-2 text-xs">
+                <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero2()!.powerstats.strength))">
+                  <div class="font-bold">{{ hero2()!.powerstats.strength }}</div>
+                  <div class="opacity-80">Fuerza</div>
+                </div>
+                <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero2()!.powerstats.speed))">
+                  <div class="font-bold">{{ hero2()!.powerstats.speed }}</div>
+                  <div class="opacity-80">Velocidad</div>
+                </div>
+                <div class="text-center p-2 rounded-lg" [ngClass]="getPowerStatColor(getPowerStatValue(hero2()!.powerstats.combat))">
+                  <div class="font-bold">{{ hero2()!.powerstats.combat }}</div>
+                  <div class="opacity-80">Combate</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultado del Combate -->
+        @if (showResult() && combatResult()) {
+          <div class="result-card max-w-2xl mx-auto bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950 dark:to-orange-950 rounded-2xl shadow-2xl p-8 border-2 border-yellow-300 dark:border-yellow-700">
+            <div class="text-center mb-6">
+              <div class="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400 rounded-full mb-4">
+                <svg class="w-6 h-6 text-yellow-900" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+                <span class="text-lg font-bold text-yellow-900">Resultado del Combate</span>
+              </div>
+              <h2 class="text-4xl font-black text-gray-900 dark:text-white mb-4">
+                ¡{{ combatResult()!.winner.name }} gana!
+              </h2>
+              <p class="text-xl text-gray-700 dark:text-gray-300 mb-6">
+                Poder Total: <span class="font-bold text-yellow-600 dark:text-yellow-400">{{ combatResult()!.winnerScore.toFixed(0) }}</span>
+                vs
+                <span class="font-bold">{{ combatResult()!.loserScore.toFixed(0) }}</span>
+              </p>
+              <div class="inline-block bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-lg">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  Margen de victoria: <span class="font-bold text-lg text-green-600 dark:text-green-400">{{ combatResult()!.margin.toFixed(0) }} puntos</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Estadísticas comparativas -->
+            <div class="grid grid-cols-2 gap-4 mt-8">
+              <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+                <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">Ganador</h4>
+                <p class="text-lg font-bold text-green-600 dark:text-green-400">{{ combatResult()!.winner.name }}</p>
+                <p class="text-3xl font-black text-gray-900 dark:text-white mt-2">{{ combatResult()!.winnerScore.toFixed(0) }}</p>
+              </div>
+              <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+                <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">Oponente</h4>
+                <p class="text-lg font-bold text-red-600 dark:text-red-400">{{ combatResult()!.loser.name }}</p>
+                <p class="text-3xl font-black text-gray-900 dark:text-white mt-2">{{ combatResult()!.loserScore.toFixed(0) }}</p>
+              </div>
+            </div>
+          </div>
+        }
+
+      </div>
+    }
+    
+  </div>
+</div>
+

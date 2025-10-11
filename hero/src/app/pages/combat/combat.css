@@ -1,0 +1,129 @@
+/* Animaciones para la página de combate */
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes winner-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes result-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Clases de utilidad */
+.shake {
+  animation: shake 0.5s infinite;
+}
+
+.pulse {
+  animation: pulse-scale 1s infinite;
+}
+
+.vs-text {
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.winner-badge {
+  animation: winner-appear 0.6s ease-out;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+}
+
+.result-card {
+  animation: result-slide-up 0.5s ease-out;
+}
+
+/* Efecto de brillo para el ganador */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(251, 191, 36, 0.5),
+                0 0 10px rgba(251, 191, 36, 0.5),
+                0 0 15px rgba(251, 191, 36, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.8),
+                0 0 20px rgba(251, 191, 36, 0.8),
+                0 0 30px rgba(251, 191, 36, 0.8);
+  }
+}
+
+/* Aplicar brillo al anillo del ganador */
+.ring-4.ring-yellow-400 {
+  animation: glow 2s infinite;
+}
+
+/* Transiciones suaves para las cards */
+.grid > div {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Efecto hover para los botones */
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+  .vs-text {
+    font-size: 4rem;
+  }
+  
+  .winner-badge {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Animación de entrada para las cards */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.grid > div:nth-child(1) {
+  animation: fadeInScale 0.5s ease-out 0.1s both;
+}
+
+.grid > div:nth-child(2) {
+  animation: fadeInScale 0.5s ease-out 0.2s both;
+}
+
+.grid > div:nth-child(3) {
+  animation: fadeInScale 0.5s ease-out 0.3s both;
+}
+

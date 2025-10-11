@@ -1,0 +1,164 @@
+🥊 SISTEMA DE COMBATE - FLUJO DE DATOS
+==========================================
+
+📱 USUARIO
+    ↓ (navega a /combat)
+🖥️  COMBAT COMPONENT
+    ↓ (ngOnInit)
+    🔄 startNewCombat()
+    ↓
+    🎲 CombatService.getRandomCombatIds()
+    ↓ (retorna [id1, id2])
+    ↓
+    📡 SuperHeroService.getHeroById(id1) ─┐
+    📡 SuperHeroService.getHeroById(id2) ─┼─ (Promise.all)
+    ↓                                    ↓
+    🦸 SuperHero 1 ←─────────────────────┘
+    🦹 SuperHero 2
+    ↓
+    📊 UI: Mostrar héroes + botón "¡PELEAR!"
+    ↓ (usuario hace clic)
+    ⚔️  fight()
+    ↓
+    🔄 isFighting = true
+    ↓
+    ⏱️  CombatService.delay(2000ms)
+    ↓
+    🧮 CombatService.calculateHeroScore(hero1)
+    🧮 CombatService.calculateHeroScore(hero2)
+    ↓
+    🏆 CombatService.determineWinner(hero1, hero2)
+    ↓
+    📊 CombatResult { winner, loser, scores, margin }
+    ↓
+    🎉 UI: Mostrar resultado + animaciones
+    ↓
+    🔄 isFighting = false, showResult = true
+
+═══════════════════════════════════════════════════════════════
+
+🧮 CÁLCULO DE PODER (CombatService.calculateHeroScore)
+======================================================
+
+Entrada: SuperHero
+    ↓
+📊 Extraer powerstats:
+    - intelligence: string → number
+    - strength: string → number  
+    - speed: string → number
+    - durability: string → number
+    - power: string → number
+    - combat: string → number
+    ↓
+⚖️  Aplicar pesos:
+    - intelligence × 1.0
+    - strength × 1.2  ← Más importante físicamente
+    - speed × 1.0
+    - durability × 1.0
+    - power × 1.0
+    - combat × 1.5    ← Más importante para pelea
+    ↓
+➕ Sumar todos los valores
+    ↓
+📈 Retornar: number (poder total)
+
+═══════════════════════════════════════════════════════════════
+
+🎯 DETERMINACIÓN DE GANADOR (CombatService.determineWinner)
+===========================================================
+
+Entrada: SuperHero hero1, SuperHero hero2
+    ↓
+🧮 score1 = calculateHeroScore(hero1)
+🧮 score2 = calculateHeroScore(hero2)
+    ↓
+⚖️  Comparar scores:
+    - Si score1 > score2 → hero1 gana
+    - Si score2 > score1 → hero2 gana
+    ↓
+📊 Crear CombatResult:
+    - winner: SuperHero (mayor score)
+    - loser: SuperHero (menor score)
+    - winnerScore: number
+    - loserScore: number
+    - margin: number (diferencia)
+    ↓
+🏆 Retornar: CombatResult
+
+═══════════════════════════════════════════════════════════════
+
+🎨 ESTADOS DE LA UI
+===================
+
+1️⃣ LOADING STATE
+   ┌─────────────────────────────────────┐
+   │  🔄 Cargando héroes...              │
+   │  ┌─────────┐  VS  ┌─────────┐      │
+   │  │ Skeleton│      │ Skeleton│      │
+   │  └─────────┘      └─────────┘      │
+   └─────────────────────────────────────┘
+
+2️⃣ READY STATE
+   ┌─────────────────────────────────────┐
+   ┌─────────┐  VS  ┌─────────┐
+   │ 🦸 Hero1│      │ 🦹 Hero2│
+   │ Stats   │      │ Stats   │
+   └─────────┘      └─────────┘
+   │        [¡PELEAR!]        │
+   └─────────────────────────────────────┘
+
+3️⃣ FIGHTING STATE
+   ┌─────────────────────────────────────┐
+   ┌─────────┐  ⚔️  ┌─────────┐
+   │ 🦸 Hero1│      │ 🦹 Hero2│  ← Shake
+   │ Stats   │      │ Stats   │
+   └─────────┘      └─────────┘
+   │      [¡Luchando! 🔄]      │
+   └─────────────────────────────────────┘
+
+4️⃣ RESULT STATE
+   ┌─────────────────────────────────────┐
+   ┌─────────┐  🏆  ┌─────────┐
+   │ 🦸 Hero1│      │ 🦹 Hero2│  ← Opacity 50%
+   │ Stats   │      │ Stats   │
+   │ [GANADOR]│      │         │
+   └─────────┘      └─────────┘
+   │  📊 Resultado: Hero1 gana!         │
+   │     Poder: 641.5 vs 404.2          │
+   │     Margen: 237.3 puntos           │
+   │        [Nuevo Combate]              │
+   └─────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════
+
+📁 ESTRUCTURA DE ARCHIVOS
+=========================
+
+src/app/
+├── interfaces/
+│   ├── superhero.interface.ts    ← Ya existente
+│   └── combat.interface.ts       ← NUEVO: CombatResult, CombatStats
+├── services/
+│   ├── superhero.service.ts      ← Ya existente
+│   └── combat.service.ts         ← NUEVO: Lógica de combate
+└── pages/combat/
+    ├── combat.ts                 ← Refactorizado
+    ├── combat.html               ← Sin cambios
+    └── combat.css                ← Sin cambios
+
+═══════════════════════════════════════════════════════════════
+
+🔧 DEPENDENCIAS
+===============
+
+Combat Component depende de:
+- SuperHeroService (para cargar héroes)
+- CombatService (para lógica de combate)
+- ImageProxyPipe (para imágenes)
+- CommonModule (para directivas Angular)
+
+CombatService depende de:
+- Interfaces de SuperHero y Combat
+- No tiene dependencias externas
+
+═══════════════════════════════════════════════════════════════
