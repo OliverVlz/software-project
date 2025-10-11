@@ -35,8 +35,6 @@ export function getAlignmentLabel(alignment: string): string {
       return 'Héroe';
     case 'bad':
       return 'Villano';
-    case 'neutral':
-      return 'Neutral';
     default:
       return 'Desconocido';
   }
@@ -55,8 +53,11 @@ export function getPowerstatColor(value: number): string {
 /**
  * Convierte un string de powerstat a número
  */
-export function parsePowerstat(stat: string): number {
-  return parseInt(stat) || 0;
+export function parsePowerstat(stat: string | null | undefined): number {
+  if (stat === null || stat === undefined) return 0;
+  if (typeof stat === 'string' && stat.toLowerCase() === 'null') return 0;
+  const parsed = Number.parseFloat(stat);
+  return isNaN(parsed) ? 0 : parsed;
 }
 
 /**

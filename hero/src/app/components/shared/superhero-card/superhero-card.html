@@ -51,22 +51,22 @@
           <div class="flex items-center justify-between p-2 rounded-lg"
                [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.intelligence))">
             <span class="text-sm font-medium">Inteligencia</span>
-            <span class="text-sm font-bold">{{ superhero()!.powerstats.intelligence }}</span>
+            <span class="text-sm font-bold">{{ getPowerStatValue(superhero()!.powerstats.intelligence) }}</span>
           </div>
           <div class="flex items-center justify-between p-2 rounded-lg"
                [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.strength))">
             <span class="text-sm font-medium">Fuerza</span>
-            <span class="text-sm font-bold">{{ superhero()!.powerstats.strength }}</span>
+            <span class="text-sm font-bold">{{ getPowerStatValue(superhero()!.powerstats.strength) }}</span>
           </div>
           <div class="flex items-center justify-between p-2 rounded-lg"
                [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.speed))">
             <span class="text-sm font-medium">Velocidad</span>
-            <span class="text-sm font-bold">{{ superhero()!.powerstats.speed }}</span>
+            <span class="text-sm font-bold">{{ getPowerStatValue(superhero()!.powerstats.speed) }}</span>
           </div>
           <div class="flex items-center justify-between p-2 rounded-lg"
                [ngClass]="getPowerStatColor(getPowerStatValue(superhero()!.powerstats.combat))">
             <span class="text-sm font-medium">Combate</span>
-            <span class="text-sm font-bold">{{ superhero()!.powerstats.combat }}</span>
+            <span class="text-sm font-bold">{{ getPowerStatValue(superhero()!.powerstats.combat) }}</span>
           </div>
         </div>
       </div>

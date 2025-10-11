@@ -1,11 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Pipe({
   name: 'imageProxy',
   standalone: true
 })
 export class ImageProxyPipe implements PipeTransform {
-  private readonly PLACEHOLDER = 'https://via.placeholder.com/400x600/3B82F6/FFFFFF?text=No+Image';
+
+  private readonly PLACEHOLDER = '/placeholder.png';
   
   transform(imageUrl: string): string {
     if (!imageUrl || imageUrl.trim() === '') {

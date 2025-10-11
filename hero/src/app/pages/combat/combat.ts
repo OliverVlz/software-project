@@ -57,10 +57,23 @@ export class Combat implements OnInit {
       if (response1.response === 'success' && response2.response === 'success') {
         const hero1 = SuperheroMapper.mapResponseToSuperhero(response1);
         const hero2 = SuperheroMapper.mapResponseToSuperhero(response2);
-        
+
+        // ✅ Diagnóstico: verificar datos después del mapper
+        console.log('🔍 Datos después del mapper - Héroe 1:', {
+          name: hero1.name,
+          powerstats: hero1.powerstats,
+          biography: hero1.biography
+        });
+        console.log('🔍 Datos después del mapper - Héroe 2:', {
+          name: hero2.name,
+          powerstats: hero2.powerstats,
+          biography: hero2.biography
+        });
+
         this.hero1.set(hero1);
         this.hero2.set(hero2);
       } else {
+        console.error('❌ Respuestas de API inválidas:', { response1, response2 });
         this.error.set('Error al cargar los superhéroes para el combate');
       }
     } catch (error: any) {

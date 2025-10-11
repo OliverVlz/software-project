@@ -11,22 +11,29 @@ export class SuperheroMapper {
    * Maneja valores null/undefined con valores por defecto seguros
    */
   static mapResponseToSuperhero(response: SuperHeroResponse): SuperHero {
-    // Normalizar powerstats (puede venir null o con propiedades null)
+    // Normalizar powerstats (puede venir null o con propiedades "null" como string)
     const apiPowerstats = response.powerstats;
-    
+
+    // ✅ Función helper para normalizar valores de powerstats
+    const normalizePowerstat = (value: string | null | undefined): string => {
+      if (value === null || value === undefined) return '0';
+      if (typeof value === 'string' && value.toLowerCase() === 'null') return '0';
+      return value;
+    };
+
     return {
       id: response.id || 'unknown',
       name: response.name || 'Superhero Desconocido',
       powerstats: {
-        intelligence: apiPowerstats?.intelligence || '0',
-        strength: apiPowerstats?.strength || '0',
-        speed: apiPowerstats?.speed || '0',
-        durability: apiPowerstats?.durability || '0',
-        power: apiPowerstats?.power || '0',
-        combat: apiPowerstats?.combat || '0',
+        intelligence: normalizePowerstat(apiPowerstats?.intelligence),
+        strength: normalizePowerstat(apiPowerstats?.strength),
+        speed: normalizePowerstat(apiPowerstats?.speed),
+        durability: normalizePowerstat(apiPowerstats?.durability),
+        power: normalizePowerstat(apiPowerstats?.power),
+        combat: normalizePowerstat(apiPowerstats?.combat),
       },
       biography: {
-        'full-name': response.biography?.['full-name'] || 'Desconocido',
+        'full-name': response.biography?.['full-name'] || '',
         'alter-egos': response.biography?.['alter-egos'] || 'No tiene',
         aliases: response.biography?.aliases || [],
         'place-of-birth': response.biography?.['place-of-birth'] || 'Desconocido',
@@ -51,7 +58,7 @@ export class SuperheroMapper {
         relatives: 'Ninguno',
       },
       image: {
-        url: response.image?.url || '',
+        url: response.image?.url || '/placeholder.png',
       },
     };
   }
@@ -65,17 +72,20 @@ export class SuperheroMapper {
   static calculatePowerLevel(hero: SuperHero): number {
     const stats = hero.powerstats;
     const total = 
-      parseInt(stats.intelligence || '0') + 
-      parseInt(stats.strength || '0') +
-      parseInt(stats.speed || '0') + 
-      parseInt(stats.durability || '0') +
-      parseInt(stats.power || '0') + 
-      parseInt(stats.combat || '0');
+      this.normalizePowerstat(stats.intelligence) + 
+      this.normalizePowerstat(stats.strength) +
+      this.normalizePowerstat(stats.speed) + 
+      this.normalizePowerstat(stats.durability) +
+      this.normalizePowerstat(stats.power) + 
+      this.normalizePowerstat(stats.combat);
     
     return Math.round(total / 6);
   }
 
-  static normalizePowerstat(value: string | undefined): number {
-    return parseInt(value || '0') || 0;
+  static normalizePowerstat(value: string | null | undefined): number {
+    if (value === null || value === undefined) return 0;
+    if (typeof value === 'string' && value.toLowerCase() === 'null') return 0;
+    const parsed = parseInt(value);
+    return isNaN(parsed) ? 0 : parsed;
   }
 }
